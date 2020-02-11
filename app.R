@@ -82,7 +82,7 @@ for(i in 1:length(singleTags$Username)){
 listUsernames <- unique(singleTags$Username, incomparables = FALSE)
 listUsernamesGood <- na.omit(listUsernames) # remove NA usernames
 
-singleTags$Tags <- as.character(allData$Tags)
+singleTags$Tags <- as.character(singleTags$Tags)
 
 # take unique rows of litter
 litterType <- unique(singleTags$Tags, incomparables = FALSE)
@@ -93,16 +93,6 @@ allData <- singleTags
 #test <- aggregate(allData, list(Date = allData$Date), sum)
 
 # ====================================================
-# Other data frames
-
-# create data frame of the frequent usernames
-dfCountUsername <- as.data.frame(table(singleTags$Username))
-
-# Each day
-dfEachDayOfWeek <- as.data.frame(table(allData$Day))
-
-# Each hour
-dfEachHour <- as.data.frame(table(allData$Hour))
 
 # descending order of litter count
 dfLitterCount <- as.data.frame( sort(table(allData$Tags), decreasing = TRUE) )
@@ -123,7 +113,7 @@ ui <- dashboardPage(
                          menuItem("Data Used", tabName = "cheapBlankSpace", icon = NULL),
                          menuItem("GitHub", tabName = "cheapBlankSpace", icon = NULL),
                          menuItem("Interests", tabName = "cheapBlankSpace", icon = NULL)),
-                         menuItem("", tabName = "cheapBlankSpace", icon = NULL),
+                     menuItem("", tabName = "cheapBlankSpace", icon = NULL),
                      
                      # Added drop down menu
                      selectInput("User", "Select User to visualize", c("summary", listUsernamesGood), selected = "summary"),
@@ -238,11 +228,11 @@ server <- function(input, output) {
     
     # show a bar chart of the temperatures at noon for a given room for a given year
     #output$bar3 <- renderPlot({
-        #newNoons <-  newNoonsReactive()
+    #newNoons <-  newNoonsReactive()
     #    dataInfo <- reactiveFunc()
     #    temperatures <- as.data.frame(table(dataInfo[,input$Room]))
     #    temperatures$Var1 <- as.numeric(as.character(temperatures$Var1))
-        
+    
     #    ggplot(temperatures, aes(x=Var1, y=Freq)) + geom_bar(stat="identity", fill="steelblue") +
     #        labs(x="Temperature (F)", y = "Count") + xlim(60,90)
     #})
@@ -282,4 +272,3 @@ server <- function(input, output) {
 }
 
 shinyApp(ui = ui, server = server)
-
